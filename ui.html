@@ -1,0 +1,272 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+
+<style>
+  body {
+    background-color: #1E1E1E;
+    margin: 0;
+    font-family: Inter, Helvetica, Arial, sans-serif;
+    color: white;
+    -webkit-user-select: none;
+    /* Safari */
+    -ms-user-select: none;
+    /* IE 10 and IE 11 */
+    user-select: none;
+    /* Standard syntax */
+  }
+
+  .container {
+    padding: 24px;
+    background: #1E1E1E;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 20px;
+    display: inline-flex;
+  }
+
+  .section {
+    align-self: stretch;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 8px;
+    display: flex;
+  }
+
+  .title {
+    align-self: stretch;
+    color: white;
+    font-size: 32px;
+    font-family: 'Space Grotesk', Inter, Helvetica, Arial, sans-serif;
+  }
+
+  .description {
+    align-self: stretch;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 12px;
+  }
+
+  .option {
+    cursor: pointer;
+    align-self: stretch;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0px;
+  }
+
+  .option:hover {
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  .option:active {
+    background: rgba(255, 150, 3, 0.5);
+  }
+
+  .option-text {
+    flex: 1 1 0;
+    color: white;
+    font-size: 12px;
+    font-weight: 400;
+  }
+
+  .option-example {
+    flex: 1 1 0;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 12px;
+    font-weight: 400;
+    text-align: left;
+  }
+
+
+  .suggested-tag {
+    position: absolute;
+    right: 12px;
+    top: 18px;
+    padding: 4px 8px;
+    background: rgb(208, 255, 0);
+    border-radius: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .suggested-text {
+    font-size: 10px;
+    color: #1E1E1E;
+  }
+
+  .text-link-primary {
+    cursor: pointer;
+    color: white;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .text-link-primary:hover {
+    color: rgba(255, 255, 255, 0.578);
+  }
+
+  .text-link-secondary {
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 12px;
+    font-weight: 400;
+  }
+
+  .text-link-secondary:hover {
+    color: rgba(255, 255, 255, 0.2);
+  }
+
+  .tabs {
+    display: flex;
+    gap: 6px;
+  }
+
+  .tab-button {
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 12px;
+    font-weight: 400;
+    padding: 8px 12px;
+    border-radius: 24px;
+    /* border: 1px solid rgba(255, 255, 255, 0.1); */
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+
+  .tab-button:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+  }
+
+  .tab-button.active {
+    color: #1E1E1E;
+    background-color: rgb(255, 255, 255);
+  }
+
+  .tab-content {
+    display: none;
+  }
+
+  .tab-content.active {
+    display: block;
+  }
+
+  .footer {
+    position: fixed;
+    left: 24px;
+    bottom: 24px;
+    display: flex;
+    align-self: stretch;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+  }
+</style>
+
+<div class="container">
+  <div class="section">
+    <div class="title">figmate</div>
+    <div class="description">
+      Design UI with ease at talabat
+    </div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab-button active" data-tab="case">Case</div>
+    <div class="tab-button" data-tab="text-content">Text content</div>
+    <div class="tab-button" data-tab="visual-content">Visual content</div>
+  </div>
+
+  <div class="tab-content active" id="case">
+    <div class="section">
+      <div class="description">
+        Select more than one text box on the canvas and click on the case to apply
+      </div>
+      <div class="option" id="submit-lower">
+        <div class="option-text">Lower case</div>
+        <div class="option-example">something like this</div>
+      </div>
+      <div class="option" id="submit-sentence" style="position:relative">
+        <div class="suggested-tag">
+          <div class="suggested-text">Suggested</div>
+        </div>
+        <div class="option-text">Sentence case</div>
+        <div class="option-example">Something like this</div>
+      </div>
+      <div class="option" id="submit-title">
+        <div class="option-text">Title case</div>
+        <div class="option-example">Something Like This</div>
+      </div>
+      <div class="option" id="submit-upper">
+        <div class="option-text">Upper case</div>
+        <div class="option-example" style="text-transform: uppercase;">SOMETHING LIKE THIS</div>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content" id="text-content">
+    <div class="description">This is the content for the Text content tab. Lorem ipsum dor sit amet lorem ipsum dol sit amet.</div>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <div class="text-link-primary" id="insert-meme">
+    Get a meme (NSFW)
+  </div>
+  <div style="display: flex; flex-direction: row; gap: 16px;">
+    <div class="text-link-secondary" id="about">
+      About
+    </div>
+    <div class="text-link-secondary" id="feedback">
+      Feedback
+    </div>
+  </div>
+</footer>
+
+<script>
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const tab = button.getAttribute('data-tab');
+
+        // Remove active class from all buttons and contents
+        tabButtons.forEach(btn => btn.classList.remove('active'));
+        tabContents.forEach(content => content.classList.remove('active'));
+
+        // Add active class to the clicked button and corresponding content
+        button.classList.add('active');
+        document.getElementById(tab).classList.add('active');
+      });
+    });
+  });
+
+  const options = document.querySelectorAll('.option');
+
+  options.forEach(option => {
+    option.onclick = () => {
+      parent.postMessage({ pluginMessage: { type: option.id } }, '*');
+    };
+  });
+
+  document.getElementById('insert-meme').addEventListener('click', () => {
+    parent.postMessage({ pluginMessage: { type: 'addMeme' } }, '*');
+  });
+
+  onmessage = (event) => {
+    const message = event.data.pluginMessage;
+
+    if (message.type === 'no-selection') {
+      alert('Please select a text box on the canvas.');
+    }
+  };
+
+</script>
