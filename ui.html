@@ -40,6 +40,7 @@
     color: white;
     font-size: 32px;
     font-family: 'Space Grotesk', Inter, Helvetica, Arial, sans-serif;
+    font-weight: 600;
   }
 
   .description {
@@ -71,7 +72,7 @@
     flex: 1 1 0;
     color: white;
     font-size: 12px;
-    font-weight: 400;
+    font-weight: 500;
   }
 
   .option-example {
@@ -131,6 +132,7 @@
     cursor: pointer;
     color: rgba(255, 255, 255, 0.7);
     font-size: 12px;
+    line-height: 16px;
     font-weight: 400;
     padding: 8px 12px;
     border-radius: 24px;
@@ -209,8 +211,14 @@
     </div>
   </div>
   <div class="tab-content" id="text-content">
-    <div class="description">This is the content for the Text content tab. Lorem ipsum dor sit amet lorem ipsum dol sit
-      amet.</div>
+    <div class="section">
+      <div class="description">This is the content for the Text content tab. Lorem ipsum dor sit amet lorem ipsum dol sit
+        amet.</div>
+      <div class="option" id="fill-text">
+        <div class="option-text">Vendor names</div>
+        <div class="option-example">Burger King, KFC, etc.</div>
+      </div>
+    </div>
   </div>
 
 </div>
@@ -249,6 +257,13 @@
       });
     });
   });
+
+  document.getElementById('fill-text').addEventListener('click', fillText, false);
+
+  function fillText() {
+    parent.postMessage({ pluginMessage: { type: 'fill-text' } }, '*');
+  }
+
 
   const options = document.querySelectorAll('.option');
 

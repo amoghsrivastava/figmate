@@ -1,4 +1,21 @@
 const API_URL = 'https://meme-api.com/gimme/dankmemes';
+const DATA_URL = 'https://firebasestorage.googleapis.com/v0/b/figmate.appspot.com/o/data.txt';
+
+// Read the content of the text file from Firebase Storage
+async function readRemoteTextFile(): Promise<string[]> {
+  try {
+    const response = await fetch(DATA_URL);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch data: ${response.statusText}`);
+    }
+    const text = await response.text();
+    return text.split('\n').filter((line: string) => line.trim() !== '');
+  } catch (error) {
+    console.error('Error reading text file:', error);
+    figma.notify('Failed to fetch text file data');
+    return [];
+  }
+}
 
 // This plugin will open a window to prompt the user to enter a number, and
 // it will then create that many rectangles on the screen.
@@ -24,7 +41,7 @@ figma.ui.onmessage = async (msg) => {
 
     if (selectedTextNodes.length === 0) {
       // If no text node is selected, send a message back to the UI
-      figma.notify("Please select the text layers");
+      figma.notify('Please select at least one text layer.');
       return;
     }
 
@@ -145,5 +162,41 @@ figma.ui.onmessage = async (msg) => {
     }
 
   }
+
+  if (msg.type === 'fill-text') {
+    const selectedNodes = figma.currentPage.selection;
+    const textNodes: TextNode[] = selectedNodes.filter((node): node is TextNode => node.type === 'TEXT');
+
+    if (textNodes.length === 0) {
+      figma.notify('Please select at least one text layer.');
+      return;
+    }
+
+    const data = await readRemoteTextFile();
+    console.log("Data found: ", data);
+    if (data.length === 0) {
+      figma.notify('No data found to populate.');
+      return;
+    }
+
+    await figma.loadFontAsync({ family: "Inter", style: "Semi Bold" });
+
+    for (let i = 0; i < textNodes.length; i++) {
+      const textNode = textNodes[i];
+      const dataIndex = i % data.length; // Loop through data if there are more text layers than data
+      textNode.characters = data[dataIndex];
+    }
+
+    figma.notify('Text layers populated successfully!');
+  }
 };
+
+figma.on("selectionchange", () => {
+  const selectedNodes = figma.currentPage.selection;
+  const textNodes = selectedNodes.filter(node => node.type === 'TEXT');
+  if (textNodes.length === 0) {
+    figma.notify('No text layers selected.');
+  }
+});
+
 

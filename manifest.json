@@ -17,8 +17,8 @@
       "https://preview.redd.it",
       "https://fonts.googleapis.com",
       "https://fonts.gstatic.com",
-      "https://vendors.talabat.com"
-
+      "https://vendors.talabat.com",
+      "https://firebasestorage.googleapis.com"
     ]
   }
 }
