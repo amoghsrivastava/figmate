@@ -214,7 +214,7 @@
     <div class="section">
       <div class="description">This is the content for the Text content tab. Lorem ipsum dor sit amet lorem ipsum dol sit
         amet.</div>
-      <div class="option" id="fill-text">
+      <div class="option" id="vendor-name">
         <div class="option-text">Vendor names</div>
         <div class="option-example">Burger King, KFC, etc.</div>
       </div>
@@ -258,10 +258,10 @@
     });
   });
 
-  document.getElementById('fill-text').addEventListener('click', fillText, false);
+  document.getElementById('vendor-name').addEventListener('click', vendorNameData, false);
 
-  function fillText() {
-    parent.postMessage({ pluginMessage: { type: 'fill-text' } }, '*');
+  function vendorNameData() {
+    parent.postMessage({ pluginMessage: { type: 'vendor-name-data' } }, '*');
   }
 
 

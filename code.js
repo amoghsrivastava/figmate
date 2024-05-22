@@ -9,12 +9,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 const API_URL = 'https://meme-api.com/gimme/dankmemes';
-const DATA_URL = 'https://raw.githubusercontent.com/amoghsrivastava/figmate/main/public/vendor_name_data.txt';
+const VENDOR_NAME_DATA_URL = 'https://raw.githubusercontent.com/amoghsrivastava/figmate/main/data/vendor_name_data.txt';
 // Read the content of the text file from Firebase Storage
-function readRemoteTextFile() {
+function readRemoteTextFile(url) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const response = yield fetch(DATA_URL);
+            const response = yield fetch(url);
             if (!response.ok) {
                 throw new Error(`Failed to fetch data: ${response.statusText}`);
             }
@@ -152,32 +152,28 @@ figma.ui.onmessage = (msg) => __awaiter(void 0, void 0, void 0, function* () {
             console.error('Error:', error);
         }
     }
-    if (msg.type === 'fill-text') {
+    if (msg.type === 'vendor-name-data') {
         const selectedNodes = figma.currentPage.selection;
         const textNodes = selectedNodes.filter((node) => node.type === 'TEXT');
         if (textNodes.length === 0) {
             figma.notify('Please select at least one text layer.');
             return;
         }
-        const data = yield readRemoteTextFile();
+        const data = yield readRemoteTextFile(VENDOR_NAME_DATA_URL);
         console.log("Data found: ", data);
         if (data.length === 0) {
             figma.notify('No data found to populate.');
             return;
         }
-        yield figma.loadFontAsync({ family: "Inter", style: "Semi Bold" });
+        // Update each selected text node
+        for (const node of textNodes) {
+            yield figma.loadFontAsync(node.fontName);
+        }
         for (let i = 0; i < textNodes.length; i++) {
             const textNode = textNodes[i];
             const dataIndex = i % data.length; // Loop through data if there are more text layers than data
             textNode.characters = data[dataIndex];
         }
         figma.notify('Text layers populated successfully!');
-    }
-});
-figma.on("selectionchange", () => {
-    const selectedNodes = figma.currentPage.selection;
-    const textNodes = selectedNodes.filter(node => node.type === 'TEXT');
-    if (textNodes.length === 0) {
-        figma.notify('No text layers selected.');
     }
 });

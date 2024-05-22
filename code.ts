@@ -1,10 +1,10 @@
 const API_URL = 'https://meme-api.com/gimme/dankmemes';
-const DATA_URL = 'https://raw.githubusercontent.com/amoghsrivastava/figmate/main/public/vendor_name_data.txt';
+const VENDOR_NAME_DATA_URL = 'https://raw.githubusercontent.com/amoghsrivastava/figmate/main/data/vendor_name_data.txt';
 
 // Read the content of the text file from Firebase Storage
-async function readRemoteTextFile(): Promise<string[]> {
+async function readRemoteTextFile(url: string): Promise<string[]> {
   try {
-    const response = await fetch(DATA_URL);
+    const response = await fetch(url);
     if (!response.ok) {
       throw new Error(`Failed to fetch data: ${response.statusText}`);
     }
@@ -163,7 +163,7 @@ figma.ui.onmessage = async (msg) => {
 
   }
 
-  if (msg.type === 'fill-text') {
+  if (msg.type === 'vendor-name-data') {
     const selectedNodes = figma.currentPage.selection;
     const textNodes: TextNode[] = selectedNodes.filter((node): node is TextNode => node.type === 'TEXT');
 
@@ -172,14 +172,17 @@ figma.ui.onmessage = async (msg) => {
       return;
     }
 
-    const data = await readRemoteTextFile();
+    const data = await readRemoteTextFile(VENDOR_NAME_DATA_URL);
     console.log("Data found: ", data);
     if (data.length === 0) {
       figma.notify('No data found to populate.');
       return;
     }
 
-    await figma.loadFontAsync({ family: "Inter", style: "Semi Bold" });
+    // Update each selected text node
+    for (const node of textNodes) {
+      await figma.loadFontAsync(node.fontName as FontName);
+    }
 
     for (let i = 0; i < textNodes.length; i++) {
       const textNode = textNodes[i];
@@ -190,13 +193,5 @@ figma.ui.onmessage = async (msg) => {
     figma.notify('Text layers populated successfully!');
   }
 };
-
-figma.on("selectionchange", () => {
-  const selectedNodes = figma.currentPage.selection;
-  const textNodes = selectedNodes.filter(node => node.type === 'TEXT');
-  if (textNodes.length === 0) {
-    figma.notify('No text layers selected.');
-  }
-});
 
 
