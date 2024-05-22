@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 const API_URL = 'https://meme-api.com/gimme/dankmemes';
-const DATA_URL = 'https://firebasestorage.googleapis.com/v0/b/figmate.appspot.com/o/data.txt';
+const DATA_URL = 'https://raw.githubusercontent.com/amoghsrivastava/figmate/main/public/vendor_name_data.txt';
 // Read the content of the text file from Firebase Storage
 function readRemoteTextFile() {
     return __awaiter(this, void 0, void 0, function* () {
