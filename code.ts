@@ -26,7 +26,7 @@ async function readRemoteTextFile(url: string): Promise<string[]> {
 // full browser environment (See https://www.figma.com/plugin-docs/how-plugins-run).
 
 // This shows the HTML page in "ui.html".
-figma.showUI(__html__, { width: 360, height: 500 });
+figma.showUI(__html__, { width: 314, height: 600 });
 
 // Calls to "parent.postMessage" from within the HTML page will trigger this
 // callback. The callback will be passed the "pluginMessage" property of the
@@ -84,77 +84,77 @@ figma.ui.onmessage = async (msg) => {
       figma.createImageAsync(imageUrl).then(async (image: Image) => {
         const page = figma.currentPage;
         const children = page.children;
-    
+
         // Get the original dimensions of the image
         const { width: imageWidth, height: imageHeight } = await image.getSizeAsync();
-    
+
         // Set the fixed width and calculate the proportional height
         const fixedWidth = 320;
         const newHeight = (imageHeight / imageWidth) * fixedWidth;
-    
+
         // Function to check if the new position overlaps with existing elements
         function isOverlapping(x: number, y: number, width: number, height: number): boolean {
-            for (const child of children) {
-                if ('absoluteBoundingBox' in child && child.absoluteBoundingBox) {
-                    const { x: childX, y: childY, width: childWidth, height: childHeight } = child.absoluteBoundingBox;
-                    if (
-                        x < childX + childWidth &&
-                        x + width > childX &&
-                        y < childY + childHeight &&
-                        y + height > childY
-                    ) {
-                        return true;
-                    }
-                }
+          for (const child of children) {
+            if ('absoluteBoundingBox' in child && child.absoluteBoundingBox) {
+              const { x: childX, y: childY, width: childWidth, height: childHeight } = child.absoluteBoundingBox;
+              if (
+                x < childX + childWidth &&
+                x + width > childX &&
+                y < childY + childHeight &&
+                y + height > childY
+              ) {
+                return true;
+              }
             }
-            return false;
+          }
+          return false;
         }
-    
+
         // Find a position that doesn't overlap
         let newX = 0;
         let newY = 0;
         const gap = 10; // Gap between elements
         let foundPosition = false;
-    
+
         // Define an arbitrary large width for the page or use the width of the first frame
         const pageWidth = 10000; // You can adjust this value as needed
-    
+
         // Increment x and y until a non-overlapping position is found
         while (!foundPosition) {
-            if (!isOverlapping(newX, newY, fixedWidth, newHeight)) {
-                foundPosition = true;
-            } else {
-                newX += fixedWidth + gap;
-                if (newX + fixedWidth > pageWidth) { // If we reach the end of the arbitrary page width
-                    newX = 0;
-                    newY += newHeight + gap;
-                }
+          if (!isOverlapping(newX, newY, fixedWidth, newHeight)) {
+            foundPosition = true;
+          } else {
+            newX += fixedWidth + gap;
+            if (newX + fixedWidth > pageWidth) { // If we reach the end of the arbitrary page width
+              newX = 0;
+              newY += newHeight + gap;
             }
+          }
         }
-    
+
         // Create a rectangle and place it at the found position
         const memeRect = figma.createRectangle();
         memeRect.resize(fixedWidth, newHeight);
         memeRect.x = newX;
         memeRect.y = newY;
-    
+
         // Render the image by filling the rectangle
         memeRect.fills = [
-            {
-                type: 'IMAGE',
-                imageHash: image.hash,
-                scaleMode: 'FILL'
-            }
+          {
+            type: 'IMAGE',
+            imageHash: image.hash,
+            scaleMode: 'FILL'
+          }
         ];
-    
+
         // Optionally, you can set the name or other properties of the rectangle
         memeRect.name = "meme";
-    
+
         // Add the rectangle to the current page
         page.appendChild(memeRect);
         figma.viewport.scrollAndZoomIntoView([memeRect]);
-    });
-    
+      });
+
       figma.notify('Inserted a meme');
     } catch (error) {
       figma.notify('Failed to add meme');
@@ -192,6 +192,85 @@ figma.ui.onmessage = async (msg) => {
 
     figma.notify('Text layers populated successfully!');
   }
+
+  // Check if the message type is 'image-click'
+  if (msg.type === 'image-click') {
+    const selectedNodes = figma.currentPage.selection;
+
+    // Check if there are any selected nodes
+    if (selectedNodes.length === 0) {
+      figma.notify('Please select a shape');
+      return;
+    }
+
+    // Check if there are any selected nodes
+    // const selectedNodes = figma.currentPage.selection;
+
+    if (selectedNodes.length > 0) {
+      // Function to apply image fill to a node
+      async function applyImageFill(node: any) {
+        if (node.type === 'RECTANGLE' || node.type === 'ELLIPSE' || node.type === 'FRAME') {
+          try {
+            // Load the image and get its hash
+            const imageHash = await loadImageAsync(msg.url);
+
+            // Create an image paint object
+            const imagePaint = {
+              type: 'IMAGE',
+              scaleMode: 'FILL',
+              imageHash: imageHash
+            };
+
+            // Apply the image fill to the selected node
+            node.fills = [imagePaint];
+          } catch (error) {
+            // Log the error and notify the user
+            console.error('Error applying fill:', error);
+            figma.notify('Failed to apply image as fill');
+          }
+        } else {
+          // Notify the user if the selected node is not a valid shape
+          figma.notify('Please select a valid shape');
+        }
+      }
+
+      // Iterate over all selected nodes and apply the image fill
+      selectedNodes.forEach(node => {
+        applyImageFill(node);
+      });
+    } else {
+      // Notify the user if no nodes are selected
+      figma.notify('Please select at least one shape');
+    }
+
+  }
 };
+
+// Function to load an image from a URL and return its hash
+async function loadImageAsync(url: any): Promise<string> {
+  try {
+    // Fetch the image from the URL
+    const response = await fetch(url);
+
+    // Check if the response is ok
+    if (!response.ok) {
+      throw new Error(`Network response was not ok, status: ${response.status}`);
+    }
+
+    // Convert the response to an array buffer
+    const image = await response.arrayBuffer();
+
+    // Create an image in Figma and return its hash
+    const imageHash = figma.createImage(new Uint8Array(image)).hash;
+    return imageHash;
+  } catch (error) {
+    // Log the error and notify the user
+    console.error('Error loading image:', error);
+    figma.notify('Failed to load image. Please try again.');
+    throw error; // Re-throw the error if further handling is required
+  }
+}
+
+
 
 

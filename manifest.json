@@ -18,7 +18,13 @@
       "https://fonts.googleapis.com",
       "https://fonts.gstatic.com",
       "https://vendors.talabat.com",
-      "https://raw.githubusercontent.com"
+      "https://raw.githubusercontent.com",
+      "https://raw.githack.com",
+      "https://rawcdn.githack.com",
+      "https://images.deliveryhero.io",
+      "https://talabat.com",
+      "https://i.imgur.com",
+      "https://api.imgur.com"
     ]
   }
 }

@@ -35,7 +35,7 @@ function readRemoteTextFile(url) {
 // You can access browser APIs in the <script> tag inside "ui.html" which has a
 // full browser environment (See https://www.figma.com/plugin-docs/how-plugins-run).
 // This shows the HTML page in "ui.html".
-figma.showUI(__html__, { width: 360, height: 500 });
+figma.showUI(__html__, { width: 314, height: 600 });
 // Calls to "parent.postMessage" from within the HTML page will trigger this
 // callback. The callback will be passed the "pluginMessage" property of the
 // posted message.
@@ -176,4 +176,77 @@ figma.ui.onmessage = (msg) => __awaiter(void 0, void 0, void 0, function* () {
         }
         figma.notify('Text layers populated successfully!');
     }
+    // Check if the message type is 'image-click'
+    if (msg.type === 'image-click') {
+        const selectedNodes = figma.currentPage.selection;
+        // Check if there are any selected nodes
+        if (selectedNodes.length === 0) {
+            figma.notify('Please select a shape');
+            return;
+        }
+        // Check if there are any selected nodes
+        // const selectedNodes = figma.currentPage.selection;
+        if (selectedNodes.length > 0) {
+            // Function to apply image fill to a node
+            function applyImageFill(node) {
+                return __awaiter(this, void 0, void 0, function* () {
+                    if (node.type === 'RECTANGLE' || node.type === 'ELLIPSE' || node.type === 'FRAME') {
+                        try {
+                            // Load the image and get its hash
+                            const imageHash = yield loadImageAsync(msg.url);
+                            // Create an image paint object
+                            const imagePaint = {
+                                type: 'IMAGE',
+                                scaleMode: 'FILL',
+                                imageHash: imageHash
+                            };
+                            // Apply the image fill to the selected node
+                            node.fills = [imagePaint];
+                        }
+                        catch (error) {
+                            // Log the error and notify the user
+                            console.error('Error applying fill:', error);
+                            figma.notify('Failed to apply image as fill');
+                        }
+                    }
+                    else {
+                        // Notify the user if the selected node is not a valid shape
+                        figma.notify('Please select a valid shape');
+                    }
+                });
+            }
+            // Iterate over all selected nodes and apply the image fill
+            selectedNodes.forEach(node => {
+                applyImageFill(node);
+            });
+        }
+        else {
+            // Notify the user if no nodes are selected
+            figma.notify('Please select at least one shape');
+        }
+    }
 });
+// Function to load an image from a URL and return its hash
+function loadImageAsync(url) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            // Fetch the image from the URL
+            const response = yield fetch(url);
+            // Check if the response is ok
+            if (!response.ok) {
+                throw new Error(`Network response was not ok, status: ${response.status}`);
+            }
+            // Convert the response to an array buffer
+            const image = yield response.arrayBuffer();
+            // Create an image in Figma and return its hash
+            const imageHash = figma.createImage(new Uint8Array(image)).hash;
+            return imageHash;
+        }
+        catch (error) {
+            // Log the error and notify the user
+            console.error('Error loading image:', error);
+            figma.notify('Failed to load image. Please try again.');
+            throw error; // Re-throw the error if further handling is required
+        }
+    });
+}
