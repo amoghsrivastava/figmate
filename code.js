@@ -8,7 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-const API_URL = 'https://meme-api.com/gimme/dankmemes';
+const API_URL = 'https://meme-api.com/gimme/wholesomememes';
 const VENDOR_NAME_DATA_URL = 'https://raw.githubusercontent.com/amoghsrivastava/figmate/main/data/vendor_name_data.txt';
 // Read the content of the text file from Firebase Storage
 function readRemoteTextFile(url) {
@@ -35,7 +35,7 @@ function readRemoteTextFile(url) {
 // You can access browser APIs in the <script> tag inside "ui.html" which has a
 // full browser environment (See https://www.figma.com/plugin-docs/how-plugins-run).
 // This shows the HTML page in "ui.html".
-figma.showUI(__html__, { width: 314, height: 600 });
+figma.showUI(__html__, { width: 300, height: 590 });
 // Calls to "parent.postMessage" from within the HTML page will trigger this
 // callback. The callback will be passed the "pluginMessage" property of the
 // posted message.
@@ -47,7 +47,7 @@ figma.ui.onmessage = (msg) => __awaiter(void 0, void 0, void 0, function* () {
         const selectedTextNodes = figma.currentPage.selection.filter(node => node.type === 'TEXT');
         if (selectedTextNodes.length === 0) {
             // If no text node is selected, send a message back to the UI
-            figma.notify('Please select at least one text layer.');
+            figma.notify('Please select at least one text layer');
             return;
         }
         // Get the case type from the message
@@ -76,6 +76,40 @@ figma.ui.onmessage = (msg) => __awaiter(void 0, void 0, void 0, function* () {
         }
         // Notify the plugin that the work is done
         // figma.closePlugin();
+    }
+    // Functions to handle character count
+    if (msg.type.startsWith('char-count')) {
+        let totalChars = 0;
+        // Check if a text node is selected
+        const selectedTextNodes = figma.currentPage.selection.filter(node => node.type === 'TEXT');
+        if (selectedTextNodes.length === 0) {
+            // If no text node is selected, send a message back to the UI
+            figma.notify('Please select at least one text layer');
+            return;
+        }
+        for (const node of selectedTextNodes) {
+            totalChars += node.characters.length;
+        }
+        figma.notify(totalChars + ' characters');
+        // figma.ui.postMessage(totalChars);
+    }
+    // Functions to handle character count
+    if (msg.type.startsWith('object-count')) {
+        let totalChars = 0;
+        // Check if a text node is selected
+        const selectedNodes = figma.currentPage.selection;
+        if (selectedNodes.length === 0) {
+            // If no text node is selected, send a message back to the UI
+            figma.notify('Nothing is selected');
+            return;
+        }
+        else if (selectedNodes.length === 1) {
+            figma.notify(selectedNodes.length + ' object');
+        }
+        else {
+            figma.notify(selectedNodes.length + ' objects');
+        }
+        // figma.ui.postMessage(totalChars);
     }
     // Functions to add a meme to the UI
     if (msg.type === 'addMeme') {
@@ -156,7 +190,7 @@ figma.ui.onmessage = (msg) => __awaiter(void 0, void 0, void 0, function* () {
         const selectedNodes = figma.currentPage.selection;
         const textNodes = selectedNodes.filter((node) => node.type === 'TEXT');
         if (textNodes.length === 0) {
-            figma.notify('Please select at least one text layer.');
+            figma.notify('Please select at least one text layer');
             return;
         }
         const data = yield readRemoteTextFile(VENDOR_NAME_DATA_URL);

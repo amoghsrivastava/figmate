@@ -1,6 +1,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600&display=swap" rel="stylesheet" />
 
 <style>
   body {
@@ -14,52 +14,226 @@
     /* IE 10 and IE 11 */
     user-select: none;
     /* Standard syntax */
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    color-scheme: dark;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+    overflow-x: hidden;
   }
 
-  .container {
-    padding: 20px;
-    background: #1e1e1e;
+  .header {
+    display: flex;
+    padding: 20px 20px 16px 20px;
+    align-items: center;
+    gap: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+    background: #1E1E1E;
+  }
+
+  .header-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex: 1 0 0;
+  }
+
+  .left-header-container {
+    border-radius: 100px;
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAACXBIWXMAACxLAAAsSwGlPZapAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAABvrSURBVHgBzV17sFbVdV8Hr4IgyEMB0UYoCIYooBhrAB+kHStNVarRxk51jJM6OqTGsXYUqxMtanVMSxzSTHwl4mNSZsgINcPkDxwERUHGCPjAKshFZVCj8hKf4O5a+559vt9ee+3zfffyXDPfPefs917vvfY+5xZ0gMKtt97a46uvvjry66+//sbnn38+gq8jOHkQXwfyrx/f93TOFfyjoigcp33KaVv4t7Fbt24f8nXDIYcc8nqvXr3ePvjgg//E7X1OByAUdIAAI7LbjBkzvrVt27Yzd+3adQb/Tti5c+dQTu/B2R7RZTnC+46LK+C5SqeO+W0/6KCD3ubrGibU0gEDBvzhzjvvXMf3X9EBAPuVAPfdd9/B69evP/Ozzz77PnPw2fwbppAY7j0yXQcUkJ67BuSTIpxPZwl5p62tbR7/fjdo0KBVLB1baD/BfiHAzTfffNynn356FauY8xgnf8a/7pKuEaeIkLsG4kTpjayoPV32a5aOtUyIOUccccSv77rrrnbax7DPCCAqZvr06WexPr+aVcvflqoF86OrABOIWBXJz3O+PEs+S0pCIKnKakXsgYBjxAqnE19JrmXbFQEMaRFVtaR79+4z7r///uW0j2CfEOCmm26avGPHjlsZ8adjn66BQZ/GCHb8K7hchfgyTyMu4fo6uyCEEUKwMSbmdn9vSVCQEi73vz169PgZE+JZ2suwVwnAHD+S9fs9jNC/DmomQECUcLUg/YsvvojUBJQxjWtO9dSprnAvEsGEcMzthSJGdRUjzWWeZBtx4z333PMm7SXYKwRg49rzjTfe+DEj9SaezOGSpo0q5xVffvklCbeHNByTs42xmVbD/RaRIulgAnhCsMuatF3CZpaIn40bN27mdddd9xntYdjjBLjlllvGb9my5TesPk4skyqOZt0tiCdBftDjZb4fSw0RtFRESKwr62qMNxppkQpWOy4QoiyDhFzVp0+fKx944IEVtAdhjxHg+uuv78Wq5IfM0TN4vH0lDblJEM/qyHQvrWeDyxMikG0HtIpqWWXJlQnhDj300IKlIinDamkHq6WfPvbYYzP5/mvaA7BHCMB+dJ/NmzfPYiRfKi4I5omOZ8/HqxpDvCMpcODjY56zff9mtqLOHmhiJEZeJKJ3794FeFDVlFgl/b5///6Xz5o1axvtJuw2AaZNmzaSL79llXMypsuAmeO9rldVosmTQjCkkSpXZw9CG5FqEl4QtQd1smsMJWW+HfnTs2fPglVT0icT5lnOu/Thhx9up92Ag2g3gN3LMczdTzLyR8tzYH7R79u3b6+4PkgFTpAMna/KFJbElGW0NBW6HZVXOGUz8D5cQXqrq7jGwkTiwqJwS4yK53f+Kaec8vyqVas2UhehywRgnf/drVu3LuCBDCmT/CzYsyk++eQTT4QStFopCIgQyiDiy3KEV0olh6xydQjWqkeNwWSKktgFM5os9Lzb2mje9WUifO/UU09dsXLlyrepC9AlFXTttdd+j9XLIzyA/pDsRNdzukeuX47mJxqQEhECjSg+KxuQNdRWnTr7oK+WWtLts4H23hLFhPyU7cV5s2fPfoo6CZ2WgBtuuGEsc/hc7vwIEF3ilW4B+j7o0SC2IWyMEqC5P9xbEhPusRypdDSqaA+cpX5UH1QDUX1xKli6vUqCAgez5J8zfvz451avXv0OdQI6JQFscI9lkXuBdf5A0IeOke9VDxE51TZyPlWz6ZAOM4/y3I0G0refkRDCMiFNta29HlLlwnORkxhZL/BeAzKExJ/e5rQzHnnkkZbVUbdWC9544439GMnzGPlH4kAE+cL5rgM0d1cLHpisqcc1UjEPJ2lwc0V4JQG59YRutxqnes4yp5TlOTvWBOgsFIybbzA+nrzkkksGUYvQEgFkkcV+/kMsemNLrvA9BuSXxSruDJxkTQLyEoQgAq08VSeyJc42wk63rcsQJStxlCxNWIK5+viVOBwAQoQxrCV+wWVbwm1LhbiTK1n3/R2BWpFVrRhdCzlK3C3fO3BOBSED6hPmOVApoV3nmhrUImXsRrpRBl3kaoyUSmQ1ZPGOBBcwXlHHUy+88MIbqAVoagOuueaaCczpi7nhtpAm4scbKpH7phbAEZeqfipdHvIQ/xQb7KQ9F6sknW9JQAFELCCrsgdIXCUFpoTqZ6kjq2a2C1h3J6ed/vjjjy+jGqiVANH7jPz/RuSLf1+6mhUi1ECd5nQoi5xdABdXCHIZtUPKG3FNVAqOh+qJZdoL67kmPax9cPxtjLuH2B4cQTVQS4CPPvroX0u9X2GVN80JIpmRTi+X/RGSXKRdXCXa8XxsxOOEXcOljCqSaogoCdBFq1un1A5IR3i2nATnYolOiCA44YVpFPqQCAGro3+hGsiqoKuvvvp01m9/4I4ODfpFYjvA/ZU7WeY7UqtKHGhQUTARaxFGWB8QjJKi77FfbaSxjZzBjiRLjcWUupx0yVXiRqV7GlTpdo6gTnjiiSdeIQPaKANMudu4gZ6hYUv1qAnpdUAEo0aNorPPPpuOOuoovwPG8RN66qmnCvauonK6LRd7UpYqySFP13FWOd6MLyZPnkwcTvBblu+88w4xsujNN98kTZjSLiHBEwYWg8y2oFqocfHeLAm/4ttJZIApAcL9bGSXVIW4Y95kwfiOa2QVkcEFa1wxH3sEBetCwtWjwPvvv0933323W7t2bW7RlrvXXI+MXhuCgHEVwhQcUKQhQ4ZE45KduoceeojmzJkThVSQ412qwiojzvMsePMGx1Zw5HTq3Llz55MCMxRxwgknzOdKg/0ouf+wiwVI0nqcMs8FL88LJmiCfIHDDjuMTjzxxGLhwoWu3Jq0QgxV25r7NNLJlhBNLD8u2ZyfOXOml0gNEnDjLUjasGFDwb+qLZdudSI+KmCO93wo+87UYNIRY8aM+e1rr732JZZNjPAVV1xxHnP6mHLgnnqgelDHR4gKA4SfT7vgggtM5AcQ7hs7dix6RAgJUV3GSJPy2ZE4lnqaOHEi8YY75UDGfNFFFyV9qXGhK+uwrCxSHSwomcFO4etf6oYSAjDyf+LAWxHuD3F9hWgcXNaYH3/88dQMWOL8PMIztO2cWhWHieN4AhIwT7Xl4Orvyz5rYcSIEVE7NdckuCggTgvWZ6fmRt1HRADm/u+w+JyOHMy2AOeXSAASwvqJqDcD8Rw0UV2NgXXKy0EkYJmAdDJsC26+50BCz1a/ufHguKgjWhAxAzPyuKlTp47DPiICcIEfcYVKX0ioQQ5IOfDBtQQ05pR4GpZKqQXk6NCOgdBqkqpsqByNhSBGRZSGu1sZk3qOmNA1sE/Qn08qPUcccw/GZ7QuqAggG+tc4R+Q+yTOgR0rJIT0alAOVrZdQb5qE7N0e1HsH5GrxqKRo59bASRgsDEO+4VyKA2+f/aoIi+Jmfxcti2V+FUEWLdu3V8xAXq4htGQH+pazQnJD9ItvZ0FVccZ6VHcBsYUjQXrUUNi0XXsNIOU/VT1KZaiiKBG27Kn7A+ghXzG8eEsFReFAhUBOOMK7Fid4SlIeSCICBwsdQFwlayIh5wXxmHaB6iPYyZSq2GidL3RFUDCqnFoWyRSEI2T1dCF4d4TQIJufDkNOyhPIjuLyxHCQkVxSrZ8ZjIJUoHjfLo+EQ3Ed5YEhPaUBFRIoRbBKffYaBuynNW2qPKoSf6dxWrIH9n0BNi0adMEnuAAB+pHjC9USAYQfiViUB24zhIAZxCQqvskEHcX638z+IdEBGlyrpNG2Oo3NAbpQaqcHgOVxliOt5RVZdNGdhe/LQ+eAJxwJjYu3B8KW1xtIDbamsMBtjzLBlcFpLm6fjXBjbawfEA8GtTOjs0aR3ZVDkT3z2ILsC3BuVw9AZhCf4GdBZ3lDD2PM7KQo0SUOjNJJCDBYktNDIeTeE44LhhqEoqg1sdVLaxUVhSBNa6RVJQ4raSbCTJFrm2XX355D17tjsEGypWvbwCPlcCkk0mEoJyfbWkX9C5ZzSTx3qm2NSEjbtP9GNKgJdIjVDZPqHXQyA5ETcaq+q3yQ6wrtMFjPpajw726sYE4mQfT24H+L6OelutHztahzuJ8uX788cfUDHjjJ5EAZ0iWvjplVF2sxnR+5J188MEHTcf14YcfIjdHtidcM+NEYvsb2agJjo08swrqy6vxEd04VHAUp1VR0XLla6kER8oggcjrgVQEee6556gZLF261NTpLlUleCXIMANuUDhSZ1J+xYrmx/yXLVuG7ViSimNySjp0maJ0bMJY25jZv9mNE7/lgMvDGyvYT+B8QDQiIYmzOFio8Ka05/AczJs3j3g/IJokIotSz0LvA0R2wEBYEh8SePXVV2nBggW4xxGBSMijjz6azEcRAlfBVtwqeGm+XnjJEMY4+qDRo0f/iO/H+tKsS0P8BzvAEwrBJpANiU6UYN7LL7/s4+5HHnlk9cai7C3Pnz/fT7JcKWrbUom5blchwOR+z4bx+VRs01+Ew+X4uUQ9Q9BQkPT666/T7bffjoxh2b2kX4tJsLz0oU5OvF1cfPHFTzAXnB+srSAG3FDLkEZeCe6IgfHFTjxI9HHkyJE+/i9S9sorr0R6uKxX3UcduvwxFWvCRrnyNjLefozCEEcffTQNHz5cXshwHJIp1qxZE2mCDIGxUSvulBBI3kfr169fAc8LhAAvMAG+HWrJHq1GAEJARMbD0RLQFIC7mqZbhMk8JwzgYvtRQBksW/WJ5VEKYVyo63HMRLHNqcrIThsTIBSVo+4vtPHNQKVeoolphFvcAGULi1sRKZQCumaUQUTcUBPiKIlIEBX61TZC3TtnHwhA1Zi0qdKiZ/3OBD8PFgIMIhBleTkaj7nlOIQaKqdjVI2j53pQCTcS2aemnWt0rZDsKOP/g+gXGTWVC+A5Iy3S9zliKJyQqm9eBQIBoP9BbRKCBgRaBqR6VucPc5xDmfpBjBMVZoi1ZXATW6A52NXoapw4gXdCmfFaEuVs/Y7SimqqUl0ZQstz9zbVcKTDkBvBo4i4Fz0NVFP63oF+1BOEtCKjvlrx8yOJURxLVjpluFi1j1err0jC1DWH/OoqKkjMfZvmJpwcNqikwK/w4CU8czJqEFli+kLclGzki7fE3ojbuHGj1uehLeTkKg0lSNoaOnSo31x/9913pb1I1dVIjKtRWRaeyIJmyJd3jUUCxBccggjAjkJb1PCDNdIiz0DlWenoeUQHu3r16lXccccd/kxO+Ypp8dJLL9HcuXNp9erV/s1LUkYQJlv1JS9ay0k3ORJz0kknVWuPVatWFdOnT3fs6blS3VoIihgKJFmrrJyUEbQdjc1wcja1ceL7PNGjSOldxeiYl3BsQKrhmhZqQuFe60kPV111lUdYAEHc+PHjfZrEZXj1Wsj6gX11/xzO5cvphf79+xfiy8tBrzFjxnh3D95o9DB27Fi67LLLinvvvRdVSgIuYzeI7MNYFnfj/AkkUvXzgRDgT6Q8Gz2IqrX0GCIiMGeI68S1IkyPHj0KRD6CEGLgwIH+J+c4A8hiqSg/RdMqTJo0iR588EF56cS5mogmSGlIq9RbK+rHKi/zUCpoo3hBH1SlO47TycR0SNlBZwXZhjS7kiUyQ9jRvSCxaDF8HaCVM0caJMwCn01wLnYScmGNarzI0RnOj2yT0W7F5HzZ1o0JsMk1DLAlVkFfRvmhWPTQ0H3OaIdyaXKVFxxaiZzuLrz44otBdSGSwvxwXJZjUXlBSEBVzmrH35QMU0WOGffvslR0e8U1arvyA0YFIFMTJhAklMNnJFYYXTTYmoH7wJwY270B0o8gf9asWdUzjKmScBiPq2GanCNQy3BBVYJKerWNRfI16MxH7AKlM66atVBDm0DhnsheQZPtMfk41LRp0/zB2alTp3pvKHwoo6sgKmf58uUkYXEhgFqNojtb1amRgPJiez+6HMXSEn0qzXdQFO3FpZde2mvr1q2ihnqXiY7j93UrWwKnJjy3rLxRB6rBRM/CCMccc4w3muJSii/P0crKpcyBIFjeZZBj5aLSnn76aeK1hLXPgYY10et4rxCK9zniJbZC5jdgwACc7yfdu3cf7Auce+658k204SGTCeK/UAgGGLm3agMnRMBNZYjIsheFcZ8M3qojg5c9BSHK4MGDqW/fvvIqkC8kexgiPe+9955rb2/3iy5+Nh0Fi6PJ8ODqVAnWtaTFpXbDH3c//PDDMYLw4uLFi0/xVoG5agGL6jVhMPJigRyjwMZDPUAMIiioqwJcU80BegmfBUNteb9ffrK5o8pgf36Mqr5rgiBdBrkb24uMgsZNDaF9/fI0Ns7JfxozyPPTMBhPLcsgqUYdZRYjLjbE5oCxnvpVEw8dG2VwHIUuj89WH0SRW11JQBgjzM1iFh2WTuau51fi1Kk6i+W+wy8qikWcINtgB0vn8o4TREeTyVBGbHUoGfcSYFKOMhD6UuuJKDAI6cl9aB+RbJTJSUzSpzVn6KeZeqqg/Exmlcdz+YJx7Ang/SLeA/181KhR3+HM40IlicPg1mQOMivnxD44MNhI1MKOfkbSZ7Spy5DmWugjpyb0YomoHrG1Rjd3L1f5AKC8OUkNo7+EnYNfSn43qDCPGsgqghrKQJhYYYmg+ln7BkVu0FqMLXF3ttiHCTqrD6MftKJ1K+CoD5QuuHeqLOZXb9oEYIl4sLoPN8zx/4MDFUNcEsFlEEswB2dNAAHyEUykqzqayK6RbaqaZNFotOkMpGKAMOlPzRfvoxV1CbjxTuXaKqg+kYjqy1pVFGvt2rVfjBw5cjzfjiJQG+WHmJI4D+jknLHSgBHTatI5FdTAV4RU5FZrNar9dKwbIYhSG+acfbqisMooZCdrm3CVV3HlNAQ1VO6cRYsWzQ6Vu6kO/xOpL7qriF+eiLgtpFncbPwCy0QeVI7zgWNMg+mcrfqI0l0r5/LeCTybkqPmkNgXazwBys8iE8Xu+CNYJuHcKVOmrOaC4R1Of7CqfFMyMZhF9KkIGxR3RN5RQFamXvSox5wjHLRpGcyoP13eufRzNrovYMJorYDlwlXOGZVvgIYybyxdunQUjtla1//CNY4h+gaKjoNWoXOUAuQwUwpI6XCKdXdiXHECAIXRLtWkOefSd84oo45CeaifXd/AWFCik3GU36IO9sH3wWkz9MQSArDrOYcRvikMTrhVju+FgRkdVgPBdpwh8tBGMmAoZ6m5Cnk19fAx4UgXc3Ftus5rTDFlMmPYHhhnekzrnnnmmcdIQUKAhQsXbuXLbQScLlKgPtOIVRI9mHtWgKFsZxEIZ605E8fiaiSCmkiZq5cqRGxRqtIguSgllZ2S8vIBcIzilm3cZiKBMnDOOef8H7umI4N+l0WZRBlDm2Qstqg5oM5M6jhnng9FHU2U9pOklwmFUShXJmrDpVJR2RMVojedCd6f1rH/dRyZHUEGZGO73NGVoQ/5iQTIgkJxqSNlsDSA+EYc7NLNnKq8uo/iNCUyHOYTxXEj3b9BIP/sUhXnDORXdY39kUTVieop4/7VYFgiplMGsrvZvC7YMHz4cPlc2TeDtyNECF9KhIGhj05kS0JWdPUBLj15l+r2ggzJwTJqfI6Iavc3iPLBxZqxJJIgiOeQMxJY5vdr9nz+I9dx7e4GN/BjvmxGzpU4fOgc9KRzrum3Pi3j60CSrDo+uczD9UCiu0MZ4MwCxpWtp9pwyLl6nLqNcE+lsyK4AXxI4lu8Z3EL1UDteY633nprO6+O32Rb8PdlL/4nLlZ4/Z4oihA2swPOqZWruuYqWeV0W5gRtV8iQ8d7LP0dxbhCJ0Rm2D1Kl+/ElQG3Cg+Mp6s46Fb72cqmB2pYFa0ZNmxYPx5/9SZ9CK2WH6KIEN8ktBAZX+ecPoltGWFtOAMyc2pISwzaiCiE4lLV5fQYcQwuVYc+TXbmRPcjkfn2v9jwzqQm0NKXc7mxn/JlPYqvGGT570MuVkOoligMUOVFy3nMg/JatTQaNBZlLlVDkcQ4W81pvYP3vo/yKwBmf4gHRr62M2vYFtxGreCWWoSzzjprKHP+Cu4k+hCpnNdU30JoGbQqaFKuU3lKRVjqJqnrMuoG7zFN/o+AHBSgOJTRzr/Jy5Yta6cWoGUCCEyePHksS8NKUkgriWD904ZO9+EruvxbNi5WPRFiVZ3AldE4dL5Kq7MPmO8XpxLrUWUEBWOef/75l6lF6NQ/cGhvb3+f7cEGvv2bUFc6lzf/BDHhbcdwAJeUrocrNmtJQKRuAHS5ooZIBZSx2i+aSEPUH+ZLhLNPnz5OlZPDDBew3l9MnYBO/weN9evXr+T1gZyoPheS/YerBbnhoxQKmnk70b6vy3g9lOHKqkCMtDoJMFfEmtgoVSFPDK7E+Am8JS6zkz2ea9jff5Q6CV36Jz7snv7xuOOO27Br167z4RiKP3ohLiocaemYiR1eqLIz3RSGutDIMu0HqoTyuc5dTVSTxf3l/xXz3o4qKK+6/oTVzi+pC9Dl/6LERFg5dOjQDYzcc6jjdIUfsKwGxTsSF9XlQxSRr03NjbCWCAdtWGrNlCLg6BzXR+or5IXXS/FoSWib877PyJ9NXYROG0gN7B2N44H+jm+HqXb9/xjYsWNHUy+HlMHOqZgyrxWvKVprUL2U1NYTN1PUDp4SLOtuZjX83RUrVqyk3YDdJoCAuKg8qEX8G4rrKvkjh2PlqCN8/sD0bqzxGByrkZkYU6MPtAVJG5Z7KSBxL0F8JgzfzlJ+xpIlSzr1H5Ms2K3/pBeAvaMto0eP/s3OnTu78yBlxVyJsagH4aLSNphuIKUqKckviRHFdSjjpcAzIj20U8t0QnAJK8h/xIDTzNVYeB4/ZyP8A95Yb/69mxZgj0gAAkvDP/Kg5T+qDiXDSMqiTb6rXP637DAGUwICKHfR1Pm58uo560mVO3/hDI9D56LM38wE+Wf2dB6nPQh7RAIQWBpWs4ckHwARX228zpc4kkyUOUm+hFgYhLBUjPW/xxKPSC8EnREv0sQL+xzyufngSlNDgn0fDE9w3vnPMtAehj0uAQgsDT9gJN/BEx5GKWJ9/3Jun421fFuzUF9qtAji81xma9ICK11wLCtZWVDBP1pIqnK5dXz9Jw4rPE17CfYqAQJMmjTpMp7MbaVaij4AAjrWf6lXVtPhX53jdyvAWCbv8TZBvpxG8Ppc3EhZq8jhY6LajZqPud1/Y8T/ivYy7BMCBJgwYcLljAzZoPhzTM8hMHy/Tox3MODhk2r6HwaJkQ97FSFcLtwth6P4ubIzTr0PUMSvVa3n9n/OkczZ5eGEvQ77lAABJk6ceB5P9oc88fOoERJP1gJF/uR09v9Rhrr4SGS+q1YBN7WIL/++N1VNDvYLAQKwRBzLl8mMgMsYQWcSuK8aOuP1ZNKdul/Mv/lsgGfzrtUW2k+wXwmAcNpppw1llTGJVcuZjDj5dx/yjw4Sjq3j5JBvSQ6rprWc9iz/nmKk/35/Ih3hgCGAhilTpvTZvHnzyYxMOac6nAkjq+y+jMgh5b/T9acDwDhv4bwPOX2LvAAtG+Ki0zld3oP+4/Lly7fRAQj/D8BYSNc+SdIqAAAAAElFTkSuQmCC') rgba(255, 255, 255, 0.1) 50% / cover no-repeat;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+  }
+
+  .right-header-container {
+    display: flex;
+    padding: 4px 0px 4px 5px;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255, 255, 255, 1);
+    text-align: right;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: normal;
+  }
+
+  .navigation {
+    display: flex;
+    height: 64px;
+    padding: 0px 20px;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    background: #1E1E1E;
+    overflow-x: scroll;
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+  }
+
+  .navigation::-webkit-scrollbar {
+    /* WebKit */
+    width: 0;
+    height: 0;
+  }
+
+  .tabs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .tab-button {
+    display: flex;
+    padding: 8px 10px;
     flex-direction: column;
-    justify-content: flex-start;
     align-items: flex-start;
-    gap: 20px;
+    gap: 8px;
+    border-radius: 1000px;
+    background: rgba(255, 255, 255, 0.05);
+    align-self: stretch;
+    color: rgba(255, 255, 255, 0.70);
+    text-align: center;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+  }
+
+  .tab-button:hover {
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  .tab-button.active {
+    color: #1e1e1e;
+    background: rgb(255, 255, 255);
+    font-weight: 400;
+  }
+
+  .content-container {
+    display: flex;
+    padding: 0px 20px;
+    flex-direction: column;
+    align-items: stretch;
+    flex-shrink: 0;
+    align-self: stretch;
+    flex: 1;
+    overflow: auto;
+    padding-bottom: 16px;
+  }
+
+  .tab-content {
+    display: none;
+    flex-direction: column;
+    align-items: flex-start;
+    align-self: stretch;
+    gap: 8px;
+  }
+
+  .tab-content.active {
     display: flex;
   }
 
-  .section {
+  .footer {
+    display: flex;
+    padding: 16px 20px 20px 20px;
+    align-items: flex-start;
+    gap: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.10);
+    background: #1E1E1E;
+  }
+
+  .list-view {
+    display: flex;
     align-self: stretch;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: flex-start;
+    align-items: stretch;
     gap: 8px;
+  }
+
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+
+  .grid-view {
+    align-items: center;
+    align-self: stretch;
     display: flex;
+  }
+
+  .grid-item {
+    height: 60px;
+    width: 60px;
+    display: block;
+    border-radius: 8px;
+    /* background-color: #f5f5f5; */
+    border: 1px solid rgba(255, 255, 255, 0.10);
+  }
+
+  .grid-item img {
+    max-width: 100%;
+    height: 100%;
+    cursor: pointer;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  .loading-indicator {
+    display: none;
+    z-index: 1000;
+    width: 24px;
+    height: 24px;
+    border: 2px solid #ffffff4a;
+    border-bottom-color: transparent;
+    border-radius: 100%;
+    align-self: center;
+    box-sizing: border-box;
+    animation: rotation 0.3s linear infinite;
+    margin: auto;
+    margin-top: 155px;
+  }
+
+  @keyframes rotation {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
   }
 
   .title {
-    align-self: stretch;
-    color: white;
-    font-size: 20px;
-    line-height: 100%;
+    color: #FFF;
+    text-align: center;
     font-family: "Space Grotesk", Inter, Helvetica, Arial, sans-serif;
+    font-size: 20px;
+    font-style: normal;
     font-weight: 600;
-    /* text-align: center; */
-  }
-
-  .description {
-    align-self: stretch;
-    color: rgba(255, 255, 255, 0.4);
-    font-size: 12px;
+    line-height: 24px;
+    letter-spacing: -0.6px;
+    flex: 1 0 0;
   }
 
   .option {
     align-self: stretch;
     cursor: pointer;
+    display: flex;
+    flex-direction: column;
     padding: 12px;
     background: rgba(255, 255, 255, 0.08);
-    border-radius: 6px;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 0px;
+    border-radius: 8px;
+    align-items: flex-start;
+    justify-content: center;
+    /* gap: 2px; */
+    font-size: 12px;
   }
 
   .option:hover {
@@ -73,32 +247,22 @@
   .option-text {
     flex: 1 1 0;
     color: white;
-    font-size: 12px;
-    font-weight: 500;
   }
 
   .option-example {
     flex: 1 1 0;
     color: rgba(255, 255, 255, 0.4);
-    font-size: 12px;
     font-weight: 400;
-    text-align: left;
   }
 
   .suggested-tag {
     position: absolute;
-    right: 12px;
-    top: 18px;
     padding: 4px 8px;
     background: rgb(208, 255, 0);
     border-radius: 24px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .suggested-text {
+    align-self: self-end;
     font-size: 10px;
+    font-weight: 400;
     color: #1e1e1e;
   }
 
@@ -117,7 +281,7 @@
     cursor: pointer;
     color: rgba(255, 255, 255, 0.4);
     font-size: 12px;
-    font-weight: 400;
+    font-weight: 500;
   }
 
   .text-link-secondary:hover {
@@ -128,144 +292,185 @@
     text-decoration: none;
   }
 
-  .tabs {
-    display: flex;
-    gap: 6px;
-
-  }
-
-  .tab-button {
+  #echo-text {
+    font-size: 16px;
     cursor: pointer;
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 12px;
-    line-height: 16px;
-    font-weight: 400;
-    padding: 8px 12px;
-    border-radius: 24px;
-    /* border: 1px solid rgba(255, 255, 255, 0.1); */
-    background-color: rgba(255, 255, 255, 0.05);
+    position: relative;
   }
 
-  .tab-button:hover {
-    background-color: rgba(255, 255, 255, 0.15);
+  .echo {
+    position: absolute;
+    animation: fadeOut 2s forwards, scaleEffect 1s forwards;
+    opacity: 0;
+    pointer-events: none;
+    font-size: 30px;
+    white-space: nowrap;
   }
 
-  .tab-button.active {
-    color: #1e1e1e;
-    background-color: rgb(255, 255, 255);
-  }
 
-  .tab-content {
-    display: none;
-    align-self: stretch;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-  }
-
-  .tab-content.active {
-    display: flex;
-    align-self: stretch;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-  }
-
-  .footer {
-    position: fixed;
-    left: 24px;
-    bottom: 24px;
-    display: flex;
-    align-self: stretch;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 16px;
-    background-color: #1e1e1e;
-  }
-
-  .list-view {
-    display: flex;
-    align-self: stretch;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    gap: 8px;
-  }
-
-  .grid-container {
-    display: grid;
-    /* grid-template-columns: repeat(auto-fit, minmax(52px, 1fr)); */
-    grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
-  }
-
-  .grid-item {
-    height: 62px;
-    width: 62px;
-    display: block;
-    border-radius: 6px;
-    background-color: #f5f5f5;
-  }
-
-  .grid-item img {
-    max-width: 100%;
-    height: 100%;
-    cursor: pointer;
-    object-fit: cover;
-    border-radius: 6px;
-  }
-
-  .loading-indicator {
-
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1000;
-    width: 24px;
-    height: 24px;
-    border: 2px solid #ffffff4a;
-    border-bottom-color: transparent;
-    border-radius: 50%;
-    display: inline-block;
-    box-sizing: border-box;
-    animation: rotation 1s linear infinite;
-  }
-
-  @keyframes rotation {
+  @keyframes fadeOut {
     0% {
-      transform: rotate(0deg);
+      opacity: 1;
+      transform: translateY(0);
     }
 
     100% {
-      transform: rotate(360deg);
+      opacity: 0;
+      transform: translateY(20px);
     }
+  }
+
+  @keyframes scaleEffect {
+    0% {
+      transform: scale(0.1);
+    }
+
+    15% {
+      transform: scale(0.7);
+    }
+
+    50% {
+      transform: scale(2.3);
+    }
+
+    100% {
+      transform: scale(0);
+    }
+  }
+
+
+  #snackbar {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    /* From https://css.glass */
+    background: rgba(0, 0, 0, 0.35);
+    border-radius: 8px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(14.6px);
+    -webkit-backdrop-filter: blur(10.6px);
+    border: 0.5px solid rgba(255, 255, 255, 0.1);
+    visibility: hidden;
+    text-align: left;
+    padding: 12px;
+    position: fixed;
+    z-index: 10000;
+    left: 12px;
+    right: 12px;
+    bottom: 64px;
+  }
+
+  /* Show the snackbar when clicking on a button (class added with JavaScript) */
+  #snackbar.show {
+    visibility: visible;
+    /* Show the snackbar */
+    /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+  However, delay the fade out process for 2.5 seconds */
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 4s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  }
+
+  /* Animations to fade the snackbar in and out */
+  @-webkit-keyframes fadein {
+    from {
+      bottom: 0;
+      opacity: 0;
+    }
+
+    to {
+      bottom: 64px;
+      opacity: 1;
+    }
+  }
+
+  @keyframes fadein {
+    from {
+      bottom: 0;
+      opacity: 0;
+    }
+
+    to {
+      bottom: 64px;
+      opacity: 1;
+    }
+  }
+
+  @-webkit-keyframes fadeout {
+    from {
+      bottom: 64px;
+      opacity: 1;
+    }
+
+    to {
+      bottom: 0;
+      opacity: 0;
+    }
+  }
+
+  @keyframes fadeout {
+    from {
+      bottom: 64px;
+      opacity: 1;
+    }
+
+    to {
+      bottom: 0;
+      opacity: 0;
+    }
+  }
+
+  .divider {
+    padding-top: 8px;
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+    justify-items: start;
+    gap: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 10px;
+    font-weight: 500;
+    opacity: 0.5;
   }
 </style>
 
-<div class="container">
-  <div class="section">
-    <div class="description">1.0.0</div>
-    <div class="title">figmate</div>
-    <div style="height: 0.5px; width: 100%; background-color: #404040; margin-top: 8px;"></div>
+<body>
 
-  </div>
-  <div class="tabs" id="tabs">
-    <div class="tab-button active" data-tab="case">Case</div>
-    <div class="tab-button" data-tab="text-content">Text content</div>
-    <div class="tab-button" data-tab="visual-content">Visual content</div>
+  <div class="wrapper">
+    <div class="header">
+      <div class="header-wrapper">
+        <div class="left-header-container" onclick="showSnackbar()">
+        </div>
+        <div class="title">figmate</div>
+        <div class="right-header-container">
+          <div id="echo-text">🩷</div>
+        </div>
+      </div>
+    </div>
+    <div class="navigation">
+      <div class="tabs" id="tabs">
+        <div class="tab-button active" data-tab="case">Tools</div>
+        <div class="tab-button" data-tab="text-content">Copy</div>
+        <div class="tab-button" data-tab="visual-content">Images</div>
+      </div>
+      <div class="text-link-primary" onclick="showListView()" style="display: none;" id="back-to-list-view">
+        ← Back
+      </div>
+    </div>
   </div>
 
-  <div class="tab-content active" id="case">
-    <div class="section">
+  <div class="content-container">
+    <div class="tab-content active" id="case">
+      <div class="divider">
+        Case editing
+      </div>
       <div class="option" id="submit-lower">
         <div class="option-text">Lower case</div>
         <div class="option-example">something like this</div>
       </div>
       <div class="option" id="submit-sentence" style="position: relative">
         <div class="suggested-tag">
-          <div class="suggested-text">Suggested</div>
+          Suggested
         </div>
         <div class="option-text">Sentence case</div>
         <div class="option-example">Something like this</div>
@@ -280,84 +485,119 @@
           SOMETHING LIKE THIS
         </div>
       </div>
+      <div class="divider">
+        Counters
+      </div>
+      <div class="option" id="char-count">
+        <div class="option-text">Char counter</div>
+        <div class="option-example">Count of selected text</div>
+        <!-- <div class="suggested-tag" id="char-count-result" style="font-weight: 700; display: none; color: #FFF; background-color: #ffffff20;">69</div> -->
+      </div>
+      <div class="option" id="object-count">
+        <div class="option-text">Object counter</div>
+        <div class="option-example">Count of selected objects</div>
+        <!-- <div class="suggested-tag" id="char-count-result" style="font-weight: 700; display: none; color: #FFF; background-color: #ffffff20;">69</div> -->
+      </div>
     </div>
-  </div>
 
-  <div class="tab-content" id="text-content">
-    <div class="section">
+    <div class="tab-content" id="text-content">
       <div class="option" id="vendor-name">
         <div class="option-text">Vendor names</div>
         <div class="option-example">Burger King, KFC, etc.</div>
       </div>
+      <div class="option" id="promo-tags">
+        <div class="option-text">Promo tags</div>
+        <div class="option-example">30% off, Up to 30% off, etc.</div>
+      </div>
+      <!-- <div>
+        <ul style="padding: 20px; margin: 0px; line-height: 200%; opacity: 0.5;">
+          <li>Always use the full ‘talabat’ name for sub-brands, no abbreviations.</li>
+          <li>Use “talabat pro” for the subscription program and “pro” for subscribers.</li>
+          <li>Use “talabat pickup” and “talabat rewards” as sub-brand names, but “Pickup” and “Rewards” as features.
+          </li>
+          <li>Do not capitalize “rewards” in generic sentences.</li>
+          <li>Use title case for “Pay Later.”</li>
+        </ul>
+      </div> -->
+    </div>
+
+    <div class="tab-content" id="visual-content">
+      <div class="divider" id="category-title" style="display: none; padding-bottom: 8px; padding-top: 0px;">
+        
+      </div>
+      <div class="list-view" id="list-view">
+        <a href="#" onclick="showGridView('menu', this)">
+          <div class="option">
+            <div class="option-text">Menu items</div>
+            <div class="option-example">Taken from Burger King</div>
+          </div>
+        </a>
+        <a href="#" onclick="showGridView('product', this)">
+          <div class="option">
+            <div class="option-text">Quick commerce</div>
+            <div class="option-example">Grocery items</div>
+          </div>
+        </a>
+        <!-- <a href="#" onclick="showGridView('branding', this)">
+          <div class="option">
+            <div class="option-text">Branding</div>
+            <div class="option-example">Marketing and branding imagery from talabat mart & talabat pro</div>
+          </div>
+        </a> -->
+        <a href="#" onclick="showGridView('logos', this)">
+          <div class="option">
+            <div class="option-text">Logos</div>
+            <div class="option-example">Logos from various vendors</div>
+          </div>
+        </a>
+
+      </div>
+      <div id="grid-view" class="grid-view">
+        <div id="grid-container" class="grid-container">
+          <!-- Images will be dynamically loaded here -->
+        </div>
+        <div id="loading-indicator" class="loading-indicator">
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="tab-content" id="visual-content">
-    <div class="list-view" id="list-view">
-
-      <div class="option">
-        <a href="#" onclick="showGridView('menu')">
-          <div class="option-text">Menu items</div>
-          <div class="option-example">Focusing on pizzas</div>
-        </a>
-      </div>
-
-
-      <div class="option">
-        <a href="#" onclick="showGridView('product')">
-          <div class="option-text">QC products</div>
-          <div class="option-example">Grocery items</div>
-        </a>
-      </div>
-
-
-      <div class="option">
-        <a href="#" onclick="showGridView('branding')">
-          <div class="option-text">Branding</div>
-          <div class="option-example">Marketing and branding imagery</div>
-        </a>
-      </div>
-    </div>
-    </a>
-  </div>
-
-  <div id="grid-view" class="grid-view" style="margin-top: -12px;">
-    <div class="text-link-primary" onclick="showListView()" style="margin-top: 0px; margin-bottom: 24px; display: none;"
-      id="back-to-list-view">
-      ← Back
-    </div>
-    <div id="grid-container" class="grid-container">
-      <!-- Images will be dynamically loaded here -->
-    </div>
-    <div id="loading-indicator" class="loading-indicator" style="display: none;">
-    </div>
-
-  </div>
-</div>
-</div>
-
-<footer class="footer">
-  <!-- <div class="text-link-primary" id="insert-meme">Get a meme (NSFW) </div> -->
-  <div style="display: flex; flex-direction: row; gap: 16px">
+  <footer class="footer">
+    <div class="text-link-secondary" id="insert-meme">Get meme</div>
     <a href="https://docs.google.com/document/d/1-O0Ok7AslwSvIlJmi9g-eHIlFjvRbqgyUthj_5VUeZA/edit#heading=h.rna5p5wafgim"
       target="_blank">
-      <div class="text-link-secondary" id="about">Content Guide</div>
+      <div class="text-link-secondary" id="content-guide">Content guide</div>
     </a>
-    <div class="text-link-secondary" id="feedback">Send feedback</div>
+    <div class="text-link-secondary" id="feedback">Feedback</div>
+  </footer>
+
+  <div id="snackbar">
+    <div class="icon" style="font-size: 16px;">
+      💛
+    </div>
+    have a nice day!
   </div>
-</footer>
+
+</body>
+
 
 <script>
+  const texts = ["🩷", "💛", "💙", "💚", "❤️‍🔥"];
 
-  // Your album ID
-  const CLIENT_ID = "3a40b4ddfa03e85";
+  const CLIENT_ID = "8b7ac3540d72837";
   const ALBUM_IDS = {
-    menu: "RaqWaZL", // Replace with actual album ID
-    product: "N69Kold", // Replace with actual album ID
-    branding: "djyqwSd", // Replace with actual album ID
+    menu: "H8NtMeN", // DONE
+    product: "kB064pE", // DONE
+    logos: "vAXMdhL", // DONE
+    // branding: "" // Replace with actual album ID
   };
 
-  async function showGridView(category) {
+  async function showGridView(category, element) {
+    const title = element.querySelector('.option-text').innerText;
+
+    // Display the title in the target div
+    document.getElementById('category-title').innerText = title;
+
     try {
       const albumId = ALBUM_IDS[category];
       if (!albumId) {
@@ -366,27 +606,23 @@
 
       // Hide the list view
       document.getElementById("list-view").style.display = "none";
-      // Show loading indicator
-      document.getElementById("loading-indicator").style.display = "block";
 
-      // Fetch images for the selected category
-      const images = await fetchImages(albumId);
-
-      // Hide loading indicator after images are fetched
-      document.getElementById("loading-indicator").style.display = "none";
-
-
-      document.getElementById("tabs").style.display = "none";
-      // Show the back button
-      document.getElementById("back-to-list-view").style.display = "block";
-
-      // Show the grid view
+      // Enable the grid view
       const gridView = document.getElementById("grid-view");
-      gridView.style.display = "block";
+      gridView.style.display = "flex";
 
       // Clear previous grid items
       const gridContainer = document.getElementById("grid-container");
       gridContainer.innerHTML = "";
+
+      // Show loading indicator
+      document.getElementById("loading-indicator").style.display = "flex";
+
+      // Fetch images for the selected category
+      const images = await fetchImages(albumId);
+
+      // Hide the list view
+      document.getElementById("category-title").style.display = "block";
 
       // Build grid items dynamically
       images.forEach((image) => {
@@ -402,14 +638,18 @@
         gridItem.appendChild(img);
         gridContainer.appendChild(gridItem);
       });
+
+      // Hide tabs and show the back button
+      document.getElementById("tabs").style.display = "none";
+      document.getElementById("back-to-list-view").style.display = "block";
+
     } catch (error) {
       console.error("Error displaying grid view:", error);
-      // Hide loading indicator if there's an error
+    } finally {
+      // Always hide loading indicator regardless of success or failure
       document.getElementById("loading-indicator").style.display = "none";
     }
   }
-
-
 
   function showListView() {
     // Hide the grid view
@@ -417,6 +657,9 @@
     document.getElementById("tabs").style.display = "flex";
     // Show the list view
     document.getElementById("list-view").style.display = "flex";
+    document.getElementById("back-to-list-view").style.display = "none";
+    // Hide the list view
+    document.getElementById("category-title").style.display = "none";
   }
 
   async function fetchImages(albumId) {
@@ -486,4 +729,46 @@
       alert("Please select a text box on the canvas.");
     }
   };
+
+  document.getElementById('echo-text').addEventListener('click', function (e) {
+    texts.forEach((text, index) => {
+      for (let i = 0; i < 10; i++) { // Adjust the number of echoes per text if needed
+        createEcho(text, i * 30 + index * 150); // Stagger the start times to make the effect more dynamic
+      }
+    });
+  });
+
+  function createEcho(text, delay) {
+    const echo = document.createElement('div');
+    echo.innerText = text;
+    echo.className = 'echo';
+    echo.style.left = `${Math.random() * 100}%`;
+    echo.style.top = `${Math.random() * 100}%`;
+    echo.style.animationDelay = `${delay}ms`;
+    document.body.appendChild(echo);
+
+    setTimeout(() => {
+      echo.remove();
+    }, 1000 + delay);
+  }
+
+  function showSnackbar() {
+    // Get the snackbar DIV
+    var x = document.getElementById("snackbar");
+
+    // Add the "show" class to DIV
+    x.className = "show";
+
+    // After 3 seconds, remove the show class from DIV
+    setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
+  }
+
+  // onmessage = (event) => {
+  //   if (true) {
+  //     document.getElementById("char-count-result").style.display = "flex";
+  //     charCount = event.data.pluginMessage + ' characters';
+  //     document.getElementById("char-count-result").innerText = charCount;
+  //   }
+  // }
+
 </script>

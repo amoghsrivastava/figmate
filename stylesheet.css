@@ -1,0 +1,22 @@
+:root {
+    --color-bg: rgba(30, 30, 30, 1);
+    --color-bg-primary: rgba(255, 255, 255, 0.08);
+    --color-bg-primary-hover:rgba(255, 255, 255, 0.15);
+    --color-bg-primary-pressed:rgba(255, 255, 255, 0.5);
+    --color-bg-primary-pressed:rgba(255, 255, 255, 0.5);
+
+    --color-border:rgba(255, 255, 255, 0.1);
+
+    --color-text: rgba(255, 255, 255, 1);
+    --color-text-hover: rgba(255, 255, 255, 0.8);
+    --color-text-secondary: rgba(255, 255, 255, 0.4);
+    --color-text-secondary-hover: rgba(255, 255, 255, 0.2);
+    
+    --color-bg-brand: #CFFF00;
+    --color-text-onbrand: rgba(30, 30, 30, 1);
+
+    --font-family-body: Inter, Helvetica, Arial, sans-serif;
+    --font-family-title: 'Space Grotesk', Inter, Helvetica, Arial, sans-serif;
+    --font-size-primary: 12px;
+    --font-size-secondary: 10px;
+}

@@ -1,4 +1,4 @@
-const API_URL = 'https://meme-api.com/gimme/dankmemes';
+const API_URL = 'https://meme-api.com/gimme/wholesomememes';
 const VENDOR_NAME_DATA_URL = 'https://raw.githubusercontent.com/amoghsrivastava/figmate/main/data/vendor_name_data.txt';
 
 // Read the content of the text file from Firebase Storage
@@ -10,6 +10,7 @@ async function readRemoteTextFile(url: string): Promise<string[]> {
     }
     const text = await response.text();
     return text.split('\n').filter((line: string) => line.trim() !== '');
+
   } catch (error) {
     console.error('Error reading text file:', error);
     figma.notify('Failed to fetch text file data');
@@ -26,7 +27,7 @@ async function readRemoteTextFile(url: string): Promise<string[]> {
 // full browser environment (See https://www.figma.com/plugin-docs/how-plugins-run).
 
 // This shows the HTML page in "ui.html".
-figma.showUI(__html__, { width: 314, height: 600 });
+figma.showUI(__html__, { width: 300, height: 590 });
 
 // Calls to "parent.postMessage" from within the HTML page will trigger this
 // callback. The callback will be passed the "pluginMessage" property of the
@@ -41,7 +42,7 @@ figma.ui.onmessage = async (msg) => {
 
     if (selectedTextNodes.length === 0) {
       // If no text node is selected, send a message back to the UI
-      figma.notify('Please select at least one text layer.');
+      figma.notify('Please select at least one text layer');
       return;
     }
 
@@ -74,6 +75,44 @@ figma.ui.onmessage = async (msg) => {
     // Notify the plugin that the work is done
     // figma.closePlugin();
   }
+
+  // Functions to handle character count
+  if (msg.type.startsWith('char-count')) {
+    let totalChars = 0;
+    // Check if a text node is selected
+    const selectedTextNodes = figma.currentPage.selection.filter(node => node.type === 'TEXT') as TextNode[];
+
+    if (selectedTextNodes.length === 0) {
+      // If no text node is selected, send a message back to the UI
+      figma.notify('Please select at least one text layer');
+      return;
+    }
+
+    for (const node of selectedTextNodes) {
+      totalChars += node.characters.length;
+    }
+    figma.notify(totalChars + ' characters');
+    // figma.ui.postMessage(totalChars);
+  }
+
+  // Functions to handle character count
+  if (msg.type.startsWith('object-count')) {
+    let totalChars = 0;
+    // Check if a text node is selected
+    const selectedNodes = figma.currentPage.selection;
+
+    if (selectedNodes.length === 0) {
+      // If no text node is selected, send a message back to the UI
+      figma.notify('Nothing is selected');
+      return;
+    } else if (selectedNodes.length === 1) {
+      figma.notify(selectedNodes.length + ' object');
+    } else {
+      figma.notify(selectedNodes.length + ' objects');
+    }
+    // figma.ui.postMessage(totalChars);
+  }
+
   // Functions to add a meme to the UI
   if (msg.type === 'addMeme') {
     try {
@@ -168,7 +207,7 @@ figma.ui.onmessage = async (msg) => {
     const textNodes: TextNode[] = selectedNodes.filter((node): node is TextNode => node.type === 'TEXT');
 
     if (textNodes.length === 0) {
-      figma.notify('Please select at least one text layer.');
+      figma.notify('Please select at least one text layer');
       return;
     }
 
@@ -237,7 +276,8 @@ figma.ui.onmessage = async (msg) => {
       // Iterate over all selected nodes and apply the image fill
       selectedNodes.forEach(node => {
         applyImageFill(node);
-      });
+      }
+      );
     } else {
       // Notify the user if no nodes are selected
       figma.notify('Please select at least one shape');
