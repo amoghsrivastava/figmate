@@ -41,12 +41,20 @@ figma.showUI(__html__, { width: 300, height: 590 });
 // posted message.
 // Functions to handle messages from the UI
 figma.ui.onmessage = (msg) => __awaiter(void 0, void 0, void 0, function* () {
+    // Function to set text style ID
+    const setTextStyleId = (node, styleId) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            yield figma.loadFontAsync(node.fontName); // Ensure font is loaded
+            yield figma.getStyleByIdAsync(styleId); // Apply the text style ID to the node
+        }
+        catch (error) {
+            console.error('Error setting text style ID:', error);
+        }
+    });
     // Functions to handle case
     if (msg.type.startsWith('submit-')) {
-        // Check if a text node is selected
         const selectedTextNodes = figma.currentPage.selection.filter(node => node.type === 'TEXT');
         if (selectedTextNodes.length === 0) {
-            // If no text node is selected, send a message back to the UI
             figma.notify('Please select at least one text layer');
             return;
         }
@@ -54,7 +62,6 @@ figma.ui.onmessage = (msg) => __awaiter(void 0, void 0, void 0, function* () {
         const caseType = msg.type.replace('submit-', '');
         // Function to change text case
         const changeTextCase = (text, type) => {
-            // selectedTextNodes[0].textCase = "ORIGINAL";
             switch (type) {
                 case 'title':
                     return text.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
@@ -71,11 +78,16 @@ figma.ui.onmessage = (msg) => __awaiter(void 0, void 0, void 0, function* () {
         // Update each selected text node
         for (const node of selectedTextNodes) {
             yield figma.loadFontAsync(node.fontName);
+            // Store the original text style ID
+            const originalTextStyleId = node.textStyleId;
+            // Apply the new text content with preserved style
             node.characters = changeTextCase(node.characters, caseType);
-            node.textCase = "ORIGINAL";
+            // If you want to apply a specific shared text style ID:
+            const sharedStyleId = 'YOUR_SHARED_TEXT_STYLE_ID'; // Replace with your actual shared style ID
+            yield setTextStyleId(node, sharedStyleId);
+            // Restore the original text style ID (optional)
+            // node.textStyleId = originalTextStyleId;
         }
-        // Notify the plugin that the work is done
-        // figma.closePlugin();
     }
     // Functions to handle character count
     if (msg.type.startsWith('char-count')) {
@@ -93,7 +105,7 @@ figma.ui.onmessage = (msg) => __awaiter(void 0, void 0, void 0, function* () {
         figma.notify(totalChars + ' characters');
         // figma.ui.postMessage(totalChars);
     }
-    // Functions to handle character count
+    // Functions to handle object count
     if (msg.type.startsWith('object-count')) {
         let totalChars = 0;
         // Check if a text node is selected
@@ -284,3 +296,32 @@ function loadImageAsync(url) {
         }
     });
 }
+;
+// In plugin code
+figma.on('drop', (event) => {
+    const { items, node, dropMetadata } = event;
+    if (items.length > 0 && items[0].type === 'text/plain') {
+        console.log(items);
+        // Get an image from a URL.
+        figma.createImageAsync(items[0].data).then((image) => __awaiter(void 0, void 0, void 0, function* () {
+            // Create a rectangle that's the same dimensions as the image.
+            const node = figma.createRectangle();
+            const { width, height } = yield image.getSizeAsync();
+            node.resize(width, height);
+            // Render the image by filling the rectangle.
+            node.fills = [
+                {
+                    type: 'IMAGE',
+                    imageHash: image.hash,
+                    scaleMode: 'FILL'
+                }
+            ];
+            node.x = event.x;
+            node.y = event.y;
+            figma.currentPage.selection = [node];
+            figma.notify('Added!');
+        }));
+    }
+    ;
+    return false;
+});
