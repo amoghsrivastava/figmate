@@ -1,13 +1,18 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@1,8..60,300&display=swap"
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:ital,wght@0,100..900;1,100..900&display=swap"
   rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap" rel="stylesheet">
+
+
 <style>
+
   body {
-    background-color: #1e1e1e;
+    background-color: rgb(27, 27, 27);
     margin: 0;
-    font-family: Inter, Helvetica, Arial, sans-serif;
+    font-family: "Manrope", Inter, Helvetica, Arial, sans-serif;
     color: white;
     -webkit-user-select: none;
     /* Safari */
@@ -19,19 +24,19 @@
     display: flex;
     flex-direction: column;
     color-scheme: dark;
-    font-size: 12px;
-    font-weight: 400;
+    font-size: 11px;
     line-height: 16px;
+    font-weight: 400;
     overflow-x: hidden;
+    letter-spacing: 0.39px;
   }
 
   .header {
     display: flex;
-    padding: 20px 20px 16px 20px;
+    padding: 16px 20px 16px 20px;
     align-items: center;
     gap: 16px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.10);
-    background: #1E1E1E;
   }
 
   .header-wrapper {
@@ -43,7 +48,7 @@
 
   .left-header-container {
     border-radius: 100px;
-    border: 1px solid rgba(255, 255, 255, 0.10);
+    border: 1px solid rgba(102, 102, 102, 0.1);
     background: url('data:image/png;base64,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') rgba(255, 255, 255, 0.1) 50% / cover no-repeat;
     width: 24px;
     height: 24px;
@@ -56,10 +61,8 @@
     justify-content: flex-end;
     align-items: center;
     gap: 8px;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.7);
     text-align: right;
-    font-size: 12px;
-    font-weight: 500;
     line-height: normal;
   }
 
@@ -70,7 +73,6 @@
     align-items: center;
     gap: 8px;
     flex-shrink: 0;
-    background: #1E1E1E;
     overflow-x: scroll;
     scrollbar-width: none;
     /* Firefox */
@@ -92,27 +94,23 @@
   .tab-button {
     display: flex;
     padding: 8px 10px;
-    flex-direction: column;
     align-items: flex-start;
-    gap: 8px;
     border-radius: 1000px;
-    background: rgba(255, 255, 255, 0.05);
-    align-self: stretch;
+    background: rgba(255, 255, 255, 0.04);
     color: rgba(255, 255, 255, 0.70);
-    text-align: center;
-    font-size: 12px;
-    font-weight: 400;
-    line-height: 16px;
+    transition: all 0.1s;
+    font-weight: 500;
   }
 
   .tab-button:hover {
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.08);
+    transition: all 0.1s;
   }
 
   .tab-button.active {
-    color: #1e1e1e;
-    background: rgb(255, 255, 255);
-    font-weight: 400;
+    color: rgba(0, 0, 0, 1);
+    background: rgba(255, 255, 255, 1);
+    transition: all 0.1s;
   }
 
   .content-container {
@@ -124,7 +122,7 @@
     align-self: stretch;
     flex: 1;
     overflow: auto;
-    padding-bottom: 16px;
+    padding-bottom: 20px;
   }
 
   .copy-content-container {
@@ -137,7 +135,7 @@
     justify-content: space-between;
     flex: 1;
     overflow: auto;
-    padding-bottom: 16px;
+    padding-bottom: 20px;
     text-align: center;
   }
 
@@ -149,7 +147,7 @@
   }
 
   .about-copy {
-    color: rgba(255, 255, 255, 0.80);
+    color: rgba(255, 255, 255, 0.70);
     font-weight: 400;
   }
 
@@ -171,7 +169,6 @@
     align-items: flex-start;
     gap: 12px;
     border-top: 1px solid rgba(255, 255, 255, 0.10);
-    background: #1E1E1E;
   }
 
   .list-view {
@@ -200,8 +197,21 @@
     width: 57.5px;
     display: block;
     border-radius: 8px;
-    /* background-color: #f5f5f5; */
-    border: 1px solid rgba(255, 255, 255, 0.10);
+    border: 1px solid rgba(102, 102, 102, 0.1);
+    transform: scale(1);
+    transition: all 0.4s;
+  }
+
+  .grid-item:hover {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transform: scale(1.04);
+    transition: all 0.2s;
+  }
+
+  .grid-item:active {
+    transform: scale(0.99);
+    transition: all 0.01s;
+
   }
 
   .grid-item img {
@@ -217,7 +227,7 @@
     z-index: 1000;
     width: 24px;
     height: 24px;
-    border: 2px solid #ffffff4a;
+    border: 2px solid rgba(255, 255, 255, 0.20);;
     border-bottom-color: transparent;
     border-radius: 100%;
     align-self: center;
@@ -238,15 +248,20 @@
   }
 
   .title {
-    color: #FFF;
+    color: rgba(255, 255, 255, 1.0);
     text-align: center;
     font-family: "Space Grotesk", Inter, Helvetica, Arial, sans-serif;
     font-size: 20px;
     font-style: normal;
-    font-weight: 600;
     line-height: 24px;
     letter-spacing: -0.6px;
     flex: 1 0 0;
+    transition: all 0.2s ease-in;
+  }
+
+  .title:hover {
+    letter-spacing: 0.6px;
+    transition: all 0.2s ease-out;
   }
 
   .option {
@@ -255,72 +270,80 @@
     display: flex;
     flex-direction: column;
     padding: 12px;
-    background: rgba(255, 255, 255, 0.08);
-    border-radius: 8px;
     align-items: flex-start;
     justify-content: center;
-    /* gap: 2px; */
-    font-size: 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(102, 102, 102, 0.1);
+    background: rgba(255, 255, 255, 0.04);
+    transform: scale(1);
+    transition: all 0.3s;
   }
 
   .option:hover {
-    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    transform: scale(1.005);
+    transition: all 0.1s;
   }
 
   .option:active {
-    background: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(0.99);
+    transition: all 0.01s;
   }
 
   .option-text {
     flex: 1 1 0;
-    color: white;
+    color: rgba(255, 255, 255, 1);
+    font-weight: 500;
   }
 
   .option-example {
     flex: 1 1 0;
-    color: rgba(255, 255, 255, 0.4);
-    font-weight: 400;
+    color: rgba(255, 255, 255, 0.5);
   }
 
   .suggested-tag {
     position: absolute;
     padding: 4px 8px;
-    background: rgb(208, 255, 0);
+    background: rgba(255, 255, 255, 0.08);
     border-radius: 24px;
     align-self: self-end;
     font-size: 10px;
     font-weight: 400;
-    color: #1e1e1e;
+    color: rgba(255, 255, 255, 0.5);
   }
 
   .text-link-primary {
     cursor: pointer;
-    color: white;
-    font-size: 12px;
+    color: rgba(255, 255, 255, 1);
     font-weight: 500;
+    transition: all 0.1s;
   }
 
   .text-link-primary:hover {
-    color: rgba(255, 255, 255, 0.578);
+    color: rgba(255, 255, 255, 0.5);
+    transition: all 0.1s;
   }
 
   .text-link-secondary {
     cursor: pointer;
-    color: rgba(255, 255, 255, 0.4);
-    font-size: 12px;
-    font-weight: 500;
+    color: rgba(255, 255, 255, 0.5);
+    transition: all 0.1s;
   }
 
   .text-link-secondary:hover {
-    color: rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.7);
+    transition: all 0.1s;
   }
 
   a {
     text-decoration: none;
+    color: rgba(255, 255, 255, 1);
   }
 
   #echo-text {
-    /* font-size: 16px; */
     cursor: pointer;
     position: relative;
   }
@@ -458,7 +481,7 @@
     letter-spacing: 0.1em;
     font-size: 10px;
     font-weight: 500;
-    opacity: 0.5;
+    opacity: 0.5
   }
 </style>
 
@@ -490,7 +513,20 @@
   <div class="content-container" id="main-body">
     <div class="tab-content active" id="case">
       <div class="divider">
-        Case editing
+        Counters
+      </div>
+      <div class="option" id="char-count">
+        <div class="option-text">Char counter</div>
+        <div class="option-example">Count of selected text</div>
+        <!-- <div class="suggested-tag" id="char-count-result" style="font-weight: 700; display: none; color: #FFF; background-color: #ffffff20;">69</div> -->
+      </div>
+      <div class="option" id="object-count">
+        <div class="option-text">Object counter</div>
+        <div class="option-example">Count of selected objects</div>
+        <!-- <div class="suggested-tag" id="char-count-result" style="font-weight: 700; display: none; color: #FFF; background-color: #ffffff20;">69</div> -->
+      </div>
+      <div class="divider">
+        Select text and edit
       </div>
       <div class="option" id="submit-lower">
         <div class="option-text">Lower case</div>
@@ -513,19 +549,7 @@
           SOMETHING LIKE THIS
         </div>
       </div>
-      <div class="divider">
-        Counters
-      </div>
-      <div class="option" id="char-count">
-        <div class="option-text">Char counter</div>
-        <div class="option-example">Count of selected text</div>
-        <!-- <div class="suggested-tag" id="char-count-result" style="font-weight: 700; display: none; color: #FFF; background-color: #ffffff20;">69</div> -->
-      </div>
-      <div class="option" id="object-count">
-        <div class="option-text">Object counter</div>
-        <div class="option-example">Count of selected objects</div>
-        <!-- <div class="suggested-tag" id="char-count-result" style="font-weight: 700; display: none; color: #FFF; background-color: #ffffff20;">69</div> -->
-      </div>
+
     </div>
 
     <div class="tab-content" id="text-content">
