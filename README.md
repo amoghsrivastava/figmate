@@ -12,7 +12,7 @@ A figma plugin that makes designing faster.
 7. [ ] Add more values for text content
 8. [ ] Add plugin context menu for faster access to visual/text/case content
 9. [ ] Clean up and implement DRY
-10. [ ] Add light and dark mode depending on figma environment
+10. [X] Add light and dark mode depending on figma environment
 11. [X] UI refactoring and clean up
 12. [X] Add contact email for support
 13. [X] Add an about page - Simply say, author, copyright,
