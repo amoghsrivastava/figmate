@@ -236,7 +236,7 @@ figma.ui.onmessage = (msg) => __awaiter(void 0, void 0, void 0, function* () {
             // Function to apply image fill to a node
             function applyImageFill(node) {
                 return __awaiter(this, void 0, void 0, function* () {
-                    if (node.type === 'RECTANGLE' || node.type === 'ELLIPSE' || node.type === 'FRAME') {
+                    if (node.type === 'RECTANGLE' || node.type === 'ELLIPSE' || node.type === 'FRAME' || node.type === 'COMPONENT' || node.type === 'INSTANCE') {
                         try {
                             // Load the image and get its hash
                             const imageHash = yield loadImageAsync(msg.url);

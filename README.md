@@ -16,3 +16,4 @@ A figma plugin that makes designing faster.
 11. [X] UI refactoring and clean up
 12. [X] Add contact email for support
 13. [X] Add an about page - Simply say, author, copyright,
+14. [ ] Add PNG capability to images
