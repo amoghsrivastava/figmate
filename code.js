@@ -35,10 +35,70 @@ function readRemoteTextFile(url) {
 // You can access browser APIs in the <script> tag inside "ui.html" which has a
 // full browser environment (See https://www.figma.com/plugin-docs/how-plugins-run).
 // This shows the HTML page in "ui.html".
-figma.showUI(__html__, { themeColors: true, width: 300, height: 590 });
+figma.showUI(__html__, { themeColors: true, width: 310, height: 600 });
 // Calls to "parent.postMessage" from within the HTML page will trigger this
 // callback. The callback will be passed the "pluginMessage" property of the
 // posted message.
+// RenamePro functions for advanced case conversion
+function detectCaseStyle(text) {
+    if (/^[a-z][a-zA-Z0-9]*$/.test(text))
+        return "camelCase";
+    if (/^[A-Z][a-zA-Z0-9]*$/.test(text))
+        return "PascalCase";
+    if (/^[a-z0-9_]+$/.test(text))
+        return "snake_case";
+    if (/^[a-z0-9\-]+$/.test(text))
+        return "kebab-case";
+    if (/^[A-Z][A-Za-z0-9]*(-[A-Z][A-Za-z0-9]*)*$/.test(text))
+        return "Train-Case";
+    if (/^[A-Z0-9_]+$/.test(text))
+        return "MACRO_CASE";
+    return "unknown";
+}
+function normalizeText(caseStyle, text) {
+    switch (caseStyle) {
+        case "camelCase":
+            return text.replace(/([a-z0-9])([A-Z])/g, "$1 $2").toLowerCase();
+        case "PascalCase":
+            return text.replace(/([a-z0-9])([A-Z])/g, "$1 $2").toLowerCase();
+        case "snake_case":
+            return text.replace(/_/g, " ").toLowerCase();
+        case "kebab-case":
+            return text.replace(/-/g, " ").toLowerCase();
+        case "Train-Case":
+            return text.replace(/-/g, " ").toLowerCase();
+        case "MACRO_CASE":
+            return text.replace(/_/g, " ").toLowerCase();
+        default:
+            return text.toLowerCase();
+    }
+}
+function applyCaseStyle(caseStyle, text) {
+    switch (caseStyle) {
+        case "camelCase":
+            return text.replace(/(?:^\w|[A-Z]|\b\w)/g, (word, index) => index === 0 ? word.toLowerCase() : word.toUpperCase()).replace(/\s+/g, '');
+        case "PascalCase":
+            return text.replace(/\w+/g, (word) => word[0].toUpperCase() + word.slice(1)).replace(/\s+/g, '');
+        case "snake_case":
+            return text.replace(/\s+/g, '_').toLowerCase();
+        case "kebab-case":
+            return text.replace(/\s+/g, '-').toLowerCase();
+        case "Train-Case":
+            return text.replace(/\b\w/g, (char) => char.toUpperCase()).replace(/\s+/g, '-');
+        case "MACRO_CASE":
+            return text.replace(/\s+/g, '_').toUpperCase();
+        case "Title Case":
+            return text.replace(/\b\w/g, (char) => char.toUpperCase());
+        case "Sentence case":
+            return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+        case "lower case":
+            return text.toLowerCase();
+        case "UPPER CASE":
+            return text.toUpperCase();
+        default:
+            return text;
+    }
+}
 // Functions to handle messages from the UI
 figma.ui.onmessage = (msg) => __awaiter(void 0, void 0, void 0, function* () {
     // Function to set text style ID
@@ -51,42 +111,88 @@ figma.ui.onmessage = (msg) => __awaiter(void 0, void 0, void 0, function* () {
             console.error('Error setting text style ID:', error);
         }
     });
-    // Functions to handle case
-    if (msg.type.startsWith('submit-')) {
-        const selectedTextNodes = figma.currentPage.selection.filter(node => node.type === 'TEXT');
-        if (selectedTextNodes.length === 0) {
-            figma.notify('Please select at least one text layer');
-            return;
-        }
-        // Get the case type from the message
-        const caseType = msg.type.replace('submit-', '');
-        // Function to change text case
-        const changeTextCase = (text, type) => {
-            switch (type) {
-                case 'title':
-                    return text.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
-                case 'upper':
-                    return text.toUpperCase();
-                case 'lower':
-                    return text.toLowerCase();
-                case 'sentence':
-                    return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
-                default:
-                    return text;
+    // Advanced rename functionality with match/replace support
+    function applyRename(originalText, matchPattern, renameTo, caseStyle) {
+        let newText = originalText;
+        // If no match pattern is provided
+        if (!matchPattern || matchPattern.trim() === '') {
+            // Only replace if renameTo has content, otherwise keep original text
+            if (renameTo && renameTo.trim() !== '') {
+                newText = renameTo;
             }
-        };
-        // Update each selected text node
-        for (const node of selectedTextNodes) {
-            yield figma.loadFontAsync(node.fontName);
-            // Store the original text style ID
-            const originalTextStyleId = node.textStyleId;
-            // Apply the new text content with preserved style
-            node.characters = changeTextCase(node.characters, caseType);
-            // If you want to apply a specific shared text style ID:
-            const sharedStyleId = 'YOUR_SHARED_TEXT_STYLE_ID'; // Replace with your actual shared style ID
-            yield setTextStyleId(node, sharedStyleId);
-            // Restore the original text style ID (optional)
-            // node.textStyleId = originalTextStyleId;
+            // If both match and renameTo are empty, keep original text for case transformation
+        }
+        else {
+            // Apply find and replace
+            if (originalText.includes(matchPattern)) {
+                newText = originalText.replace(new RegExp(matchPattern, 'g'), renameTo);
+            }
+            else {
+                // If no match found, keep original text
+                newText = originalText;
+            }
+        }
+        // Handle $& token for current name substitution
+        newText = newText.replace(/\$&/g, originalText);
+        // Apply case transformation if specified
+        if (caseStyle && caseStyle !== 'Sentence case') {
+            const normalizedText = normalizeText(detectCaseStyle(newText), newText);
+            newText = applyCaseStyle(caseStyle, normalizedText);
+        }
+        return newText;
+    }
+    // Handle new rename functionality
+    if (msg.type === 'rename-apply') {
+        const selectedNodes = figma.currentPage.selection;
+        if (msg.mode === "Text Mode") {
+            const textNodes = selectedNodes.filter(node => node.type === "TEXT");
+            if (textNodes.length === 0) {
+                figma.notify('Please select at least one text layer');
+                return;
+            }
+            // Load fonts for each text node and then modify the text
+            yield Promise.all(textNodes.map((textNode) => __awaiter(void 0, void 0, void 0, function* () {
+                if (textNode.type === "TEXT") {
+                    // Load the font for this text node before modifying its characters
+                    yield figma.loadFontAsync(textNode.fontName);
+                    // Apply the advanced rename logic
+                    const newText = applyRename(textNode.characters, msg.matchPattern, msg.renameTo, msg.caseStyle);
+                    textNode.characters = newText;
+                }
+            })));
+            figma.notify('Text updated successfully');
+        }
+        else if (msg.mode === "Layer Mode") {
+            // Filter for all renameable node types (any node with a name property)
+            const renameableNodeTypes = [
+                "FRAME",
+                "GROUP",
+                "RECTANGLE",
+                "ELLIPSE",
+                "TEXT",
+                "VECTOR",
+                "STAR",
+                "POLYGON",
+                "LINE",
+                "COMPONENT",
+                "INSTANCE",
+                "COMPONENT_SET",
+                "SLICE",
+                "BOOLEAN_OPERATION"
+            ];
+            const renameableNodes = selectedNodes.filter(node => {
+                return renameableNodeTypes.indexOf(node.type) !== -1;
+            });
+            if (renameableNodes.length === 0) {
+                figma.notify('Please select at least one layer');
+                return;
+            }
+            // Apply advanced rename logic to the names of selected nodes
+            renameableNodes.forEach(node => {
+                const newName = applyRename(node.name, msg.matchPattern, msg.renameTo, msg.caseStyle);
+                node.name = newName;
+            });
+            figma.notify(`${renameableNodes.length} layer name(s) updated successfully`);
         }
     }
     // Functions to handle character count
@@ -221,6 +327,26 @@ figma.ui.onmessage = (msg) => __awaiter(void 0, void 0, void 0, function* () {
             textNode.characters = data[dataIndex];
         }
         figma.notify('Text layers populated successfully!');
+    }
+    // Function to handle copying layer names
+    if (msg.type === 'copy-layer-names') {
+        const selectedNodes = figma.currentPage.selection;
+        if (selectedNodes.length === 0) {
+            figma.notify('Please select at least one layer');
+            return;
+        }
+        // Extract layer names and join with new lines
+        const layerNames = selectedNodes.map(node => node.name);
+        const layerNamesText = layerNames.join('\n');
+        // Copy to clipboard using the UI postMessage
+        figma.ui.postMessage({
+            type: 'copy-to-clipboard',
+            content: layerNamesText
+        });
+        // Notify user
+        const layerCount = selectedNodes.length;
+        const layerWord = layerCount === 1 ? 'layer name' : 'layer names';
+        figma.notify(`Copied ${layerCount} ${layerWord} to clipboard`);
     }
     // Check if the message type is 'image-click'
     if (msg.type === 'image-click') {
